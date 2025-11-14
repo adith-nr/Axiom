@@ -1,13 +1,29 @@
-import { useState } from 'react'
+import React, { useState, useRef } from "react";
+import ContentEditable from "react-contenteditable";
+const Editable_text = (props) => {
+  // const [text, setText] = useState(props.content);
+  var text = props.content;
+  const contentEditableref = useRef();
 
-const EditableText = () => {
-  const [value, setValue] = useState('Click to edit placeholder text')
+  const handleChange = (evt) => {
+    setText(evt.target.value);
+  };
+
+  const handleBlur = () => {
+    console.log(contentEditableref.current.innerHTML); // Correct value
+    // setText(contentEditableref.current.innerHTML);
+    console.log("after editing.........");
+    // console.log(text); // Incorrect value
+  };
 
   return (
-    <div className="placeholder-block" contentEditable suppressContentEditableWarning onInput={(e) => setValue(e.currentTarget.textContent ?? '')}>
-      {value}
-    </div>
-  )
-}
+    <ContentEditable
+      innerRef={contentEditableref}
+      html={props.content}
+      onBlur={handleBlur}
+      onChange={props.handleChange}
+    />
+  );
+};
 
-export default EditableText
+export default Editable_text;
